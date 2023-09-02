@@ -1,4 +1,4 @@
-# ProjetoPicPaySimples
+# Projeto Back-End PicPay
 picpaysimples
 
 Resolução do DESAFIO REAL de VAGA para desenvolvedor BACKEND. 
