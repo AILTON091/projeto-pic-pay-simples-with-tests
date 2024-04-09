@@ -34,6 +34,6 @@ public class User {
         this.balance = userDTO.getBalance();
         this.email = userDTO.getEmail();
         this.password = userDTO.getPassword();
-        this.type = UserType.valueOf(userDTO.getType());
+        this.type = userDTO.getType();
     }
 }

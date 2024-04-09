@@ -15,5 +15,5 @@ public class UserDTO {
     private BigDecimal balance;
     private String email;
     private String password;
-    private String type;
+    private UserType type;
 }
