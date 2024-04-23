@@ -44,14 +44,14 @@ class TransactionServiceTest {
         User sender = new User(1L, "Ana", "Julia", "9999999",
                 "ana@gmail.com", "1234", new BigDecimal(10), UserType.COMMON);
         User receiver = new User(2L, "Joao", "Souza", "9999992",
-                "joao@gmail.com", "1234", new BigDecimal(10), UserType.COMMON);
+                "joao@gmail.com", "12345", new BigDecimal(10), UserType.COMMON);
 
         when(userService.findUserById(1L)).thenReturn(sender);
         when(userService.findUserById(2L)).thenReturn(receiver);
 
         when(authorizationService.authorizeTranstion(any(), any())).thenReturn(true);
 
-        TransactionDTO request = new TransactionDTO(new BigDecimal(10), 1L, 2L);
+        TransactionDTO request = new TransactionDTO(new BigDecimal(10), 2L, 1L);
         transactionService.createTransaction(request);
 
         verify(repository, times(1)).save(any()); //verifica se a classe repository foi chamanda uma vez
@@ -63,7 +63,7 @@ class TransactionServiceTest {
         verify(userService, times(1)).saveUser(receiver); // verifica se userService foi chamado 1 vez atualizando o receiver
 
         verify(notificationService, times(1)).sendNotification(sender, "Transação realizada com sucesso");
-        verify(notificationService, times(1)).sendNotification(sender, "Transação recebida com sucesso");
+        verify(notificationService, times(1)).sendNotification(receiver, "Transação recebida com sucesso");
     }
 
     @Test
