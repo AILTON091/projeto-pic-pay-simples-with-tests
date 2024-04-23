@@ -4,6 +4,7 @@ import com.picpaysimplificado.picpaysimplificado.domain.user.User;
 import com.picpaysimplificado.picpaysimplificado.domain.user.UserType;
 import com.picpaysimplificado.picpaysimplificado.dto.TransactionDTO;
 import com.picpaysimplificado.picpaysimplificado.repositories.TransactionRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -68,8 +69,23 @@ class TransactionServiceTest {
 
     @Test
     @DisplayName("should throw exception when transction is not allowed")
-    void createTransactionCase2(){
+    void createTransactionCase2() throws Exception{
+        User sender = new User(1L, "Ana", "Julia", "9999999",
+                "ana@gmail.com", "1234", new BigDecimal(10), UserType.COMMON);
+        User receiver = new User(2L, "Joao", "Souza", "9999992",
+                "joao@gmail.com", "12345", new BigDecimal(10), UserType.COMMON);
 
+        when(userService.findUserById(1L)).thenReturn(sender);
+        when(userService.findUserById(2L)).thenReturn(receiver);
+
+        when(authorizationService.authorizeTranstion(any(), any())).thenReturn(false);
+
+        Exception thrown = Assertions.assertThrows(Exception.class, ()->{
+            TransactionDTO request = new TransactionDTO(new BigDecimal(10), 2L, 1L);
+            transactionService.createTransaction(request);
+        });
+
+        Assertions.assertEquals("Transação não autorizada", thrown.getMessage());
     }
 
 
